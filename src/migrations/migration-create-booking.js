@@ -30,6 +30,10 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       ngaydat: {
+        // allowNull: false,
+        type: Sequelize.DATE,
+      },
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },

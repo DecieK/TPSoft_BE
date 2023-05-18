@@ -15,7 +15,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       Ngaysinh: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
       },
       Dienthoai: {
         type: Sequelize.STRING,

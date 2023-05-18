@@ -369,24 +369,78 @@ let searchBooking = (id) => {
     }
   });
 };  
-let createAppoinment = (iddv, idbn, hoten, sdt, ngaysinh, diachi, stt) => {
+let createAppoinment = (data) => {
   return new Promise(async (resovle, reject) => {
     try {
       if (
         // !data.id ||
-        !iddv ||
-        !idbn ||
-        !hoten ||
-        !sdt ||
-        !ngaysinh ||
-        !diachi ||
-        !stt ||
-        !ngaydat
+        !data.iddv ||
+        !data.idbn ||
+        !data.sdt ||
+        !data.hoten ||
+        !data.ngaysinh ||
+        !data.diachi ||
+        !data.stt
+        // !data.ngaydat
       ) {
         resovle({
           errCode: 1,
           errMessage: "Missing parameter",
-        });
+        });}else{
+          let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
+            where: { Dienthoai: data.sdt }, // theem ho, ten
+            
+          });
+
+          if (thongtinbenhnhans && thongtinbenhnhans[0]) {
+            let exist = await db.bookings.findAll({
+              where: { id: thongtinbenhnhans[0].id },
+            });
+            if (exist) {
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                stt: data.stt,
+               
+              });
+            } else {
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                stt: data.stt,
+               
+              });
+            }
+          }else{
+            await db.thongtinbenhnhans.create({
+              Ho: data.Ho,
+              Ten: data.Ten,
+              Ngaysinh: data.ngaysinh,
+              Dienthoai: data.sdt,
+              Gioitinh: "Nam",
+              Diachi:  data.diachi,
+              Trieuchung: "asdasd",
+
+
+            })
+          }
+  
+  
+          resovle({
+            errCode: 0,
+            errMessage: "Save infor patient succeed !",
+          });
+        }
         // } else {
         //   let token = uuidv4();
         //   await emailService.sendEmail({
@@ -399,130 +453,7 @@ let createAppoinment = (iddv, idbn, hoten, sdt, ngaysinh, diachi, stt) => {
         //   });
 
         //upsert patient
-        let thongtinbenhnhans = await db.thongtinbenhnhans.findOrCreate({
-          where: { Dienthoai: sdt },
-          defaults: {
-            Ho: ho,
-            Ten: ten,
-            Ngaysinh: ngaysinh,
-            Dienthoai:sdt,
-            Gioitinh: gioitinh,
-            Diachi: diachi,
-            Trieuchung: trieuchung,
-            email: email,
-            // address: data.address,
-            // firstName: data.fullname,
-          },
-        });
-
-        if (thongtinbenhnhans && thongtinbenhnhans[0]) {
-          let exist = await db.bookings.findAll({
-            where: { id: thongtinbenhnhans[0].id },
-          });
-          if (exist) {
-            await db.bookings.create({
-              iddv: idv,
-              idbn: idbn,
-              hoten: hoten,
-              sdt: sdt,
-              // patientId: user[0].id,
-              ngaysinh: ngaysinh,
-              diachi: diachi,
-              stt: stt,
-             
-            });
-          } else {
-            await db.bookings.create({
-              iddv: idv,
-              idbn: idbn,
-              hoten:hoten,
-              sdt: sdt,
-              // patientId: user[0].id,
-              ngaysinh: ngaysinh,
-              diachi: diachi,
-              stt: stt,
-             
-            });
-          }
-        }
-
-        // savedata table booking ver-1.0
-        // console.log("check user: ", user[0]);
-        //create a booking record
-        // if (user && user[0]) {
-        //   await db.Booking.findOrCreate({
-        //     where: { patientId: user[0].id },
-        //     defaults: {
-        //       statusId: "S1",
-        //       doctorId: data.doctorId,
-        //       patientId: user[0].id,
-        //       date: data.date,
-        //       timeType: data.timeType,
-        //       token: token,
-        //     },
-        //   });
-        // }
-     
-     
-        // if(data.mabuoisa == "Sáng"){
-        //   let stt = await db.lichkhams.findOne({
-        //     where: {
-        //       iddv: data.iddv,
-        //       // tenbuoi: data.mabuoisa,
-        //       ngaydat: data.ngaydat,
-        //     },
-        //     raw: false,
-        //   });
-        //   if (stt) {
-        //     incCurrentNumber.currentNumber++;
-        //     await incCurrentNumber.save();
-        //   }
-        // } else if(data.mabuoitr == "Trưa"){
-        //   let stt = await db.lichkhams.findOne({
-        //     where: {
-        //       iddv: data.iddv,
-        //       // tenbuoi: data.mabuoitr,
-        //       ngaydat: data.ngaydat,
-        //     },
-        //     raw: false,
-        //   });
-        //   if (stt) {
-        //     incCurrentNumber.currentNumber++;
-        //     await incCurrentNumber.save();
-        //   }
-        // }
-        // else if(data.mabuoich == "Chiều"){
-        //   let stt = await db.lichkhams.findOne({
-        //     where: {
-        //       iddv: data.iddv,
-        //       // tenbuoi: data.mabuoisa,
-        //       ngaydat: data.ngaydat,
-        //     },
-        //     raw: false,
-        //   });
-        //   if (stt) {
-        //     incCurrentNumber.currentNumber++;
-        //     await incCurrentNumber.save();
-        //   }
-        // }
-
-
         
-        // let stt = await db.lichkhams.findOne({
-        //   where: {
-        //     iddv: data.iddv,
-        //     tenbuoi: data.mabuoisa,
-        //     ngaydat: data.ngaydat,
-        //   },
-        //   raw: false,
-        // });
-
-
-        resovle({
-          errCode: 0,
-          errMessage: "Save infor patient succeed !",
-        });
-      }
     } catch (e) {
       reject(e);
     }

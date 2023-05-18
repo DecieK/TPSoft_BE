@@ -44,9 +44,9 @@ module.exports = (sequelize, DataTypes) => {
       ngaydat: DataTypes.DATE,
 
 
-      CM_heart: DataTypes.INTEGER,
-      CS_heart: DataTypes.INTEGER,
-      TĐ_heart: DataTypes.INTEGER,
+      // CM_heart: DataTypes.INTEGER,
+      // CS_heart: DataTypes.INTEGER,
+      // TĐ_heart: DataTypes.INTEGER,
     },
     {
       sequelize,
