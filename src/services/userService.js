@@ -376,10 +376,15 @@ let createAppoinment = (data) => {
         // !data.id ||
         !data.iddv ||
         !data.idbn ||
+        !data.ho ||
+        !data.ten ||
         !data.sdt ||
+        !data.gt ||
         !data.hoten ||
         !data.ngaysinh ||
         !data.diachi ||
+        !data.trieuchung ||
+        !data.ngaydat ||
         !data.stt
         // !data.ngaydat
       ) {
@@ -388,7 +393,11 @@ let createAppoinment = (data) => {
           errMessage: "Missing parameter",
         });}else{
           let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
-            where: { Dienthoai: data.sdt }, // theem ho, ten
+            where: { 
+              Dienthoai: data.sdt,
+              Ho: data.ho,
+              Ten: data.ten
+            }, // theem ho, ten
             
           });
 
@@ -413,13 +422,13 @@ let createAppoinment = (data) => {
             
           }else{
             await db.thongtinbenhnhans.create({
-              Ho: data.Ho,
-              Ten: data.Ten,
+              Ho: data.ho,
+              Ten: data.ten,
               Ngaysinh: data.ngaysinh,
               Dienthoai: data.sdt,
-              Gioitinh: "Nam",
+              Gioitinh: data.gt,
               Diachi:  data.diachi,
-              Trieuchung: "asdasd",
+              Trieuchung: data.trieuchung,
             })
             await db.bookings.create({
               iddv: data.iddv,
