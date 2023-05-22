@@ -392,11 +392,8 @@ let createAppoinment = (data) => {
             
           });
 
-          if (thongtinbenhnhans && thongtinbenhnhans[0]) {
-            let exist = await db.bookings.findAll({
-              where: { id: thongtinbenhnhans[0].id },
-            });
-            if (exist) {
+          if (thongtinbenhnhans) {
+            
               await db.bookings.create({
                 iddv: data.iddv,
                 idbn: data.idbn,
@@ -408,19 +405,12 @@ let createAppoinment = (data) => {
                 stt: data.stt,
                
               });
-            } else {
-              await db.bookings.create({
-                iddv: data.iddv,
-                idbn: data.idbn,
-                hoten: data.hoten,
-                sdt: data.sdt,
-                // patientId: user[0].id,
-                ngaysinh: data.ngaysinh,
-                diachi: data.diachi,
-                stt: data.stt,
-               
+
+              resovle({
+                errCode: 0,
+                errMessage: "dat !",
               });
-            }
+            
           }else{
             await db.thongtinbenhnhans.create({
               Ho: data.Ho,
@@ -430,16 +420,25 @@ let createAppoinment = (data) => {
               Gioitinh: "Nam",
               Diachi:  data.diachi,
               Trieuchung: "asdasd",
-
-
             })
+            await db.bookings.create({
+              iddv: data.iddv,
+              idbn: data.idbn,
+              hoten: data.hoten,
+              sdt: data.sdt,
+              // patientId: user[0].id,
+              ngaysinh: data.ngaysinh,
+              diachi: data.diachi,
+              stt: data.stt,
+            });
+            resovle({
+              errCode: 2,
+              errMessage: "luu va dat",
+            });
           }
   
   
-          resovle({
-            errCode: 0,
-            errMessage: "Save infor patient succeed !",
-          });
+          
         }
         // } else {
         //   let token = uuidv4();
