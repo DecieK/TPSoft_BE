@@ -395,13 +395,15 @@ let createAppoinment = (data) => {
           let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
             where: { 
               Dienthoai: data.sdt,
-              Ho: data.ho,
-              Ten: data.ten
+              // Ho: data.ho,
+              // Ten: data.ten
             }, // theem ho, ten
             
           });
 
-          if (thongtinbenhnhans) {
+          // if (thongtinbenhnhans) {
+            if (thongtinbenhnhans.Ho+" "+thongtinbenhnhans.Ten == data.hoten) {
+
             
               await db.bookings.create({
                 iddv: data.iddv,
