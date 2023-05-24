@@ -29,6 +29,9 @@ module.exports = {
       stt: {
         type: Sequelize.INTEGER,
       },
+      buoikham: {
+        type: Sequelize.STRING,
+      },
       ngaydat: {
         // allowNull: false,
         type: Sequelize.DATE,

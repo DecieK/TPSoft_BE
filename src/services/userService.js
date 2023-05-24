@@ -368,17 +368,17 @@ let searchBooking = (id) => {
       reject(e);
     }
   });
-};  
+};
 let createAppoinment = (data) => {
-  const hova
+  // const hova
   return new Promise(async (resovle, reject) => {
     try {
       if (
         // !data.id ||
         !data.iddv ||
         !data.idbn ||
-        !data.ho ||
-        !data.ten ||
+        // !data.ho ||
+        // !data.ten ||
         !data.sdt ||
         !data.gt ||
         !data.hoten ||
@@ -386,86 +386,159 @@ let createAppoinment = (data) => {
         !data.diachi ||
         !data.trieuchung ||
         !data.ngaydat ||
+        !data.buoikham ||
         !data.stt
         // !data.ngaydat
       ) {
         resovle({
           errCode: 1,
           errMessage: "Missing parameter",
-        });}else{
-          let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
-            where: { 
-              Dienthoai: data.sdt,
-              (Ho + " "+ Ten) : (data.ho +" "+data.ten)
-              // Ten: data.ten,
-              // Ho: data.ho
-            }, // theem ho, ten
-            
+        });
+      } else {
+        let HT = data.hoten.split(" ")
+        let ho1
+        ho1 = HT[0]
+        let ten1
+        if (HT.length == 2) {
+          ten1 = HT[1]
+        }
+        else if (HT.length == 3) {
+          ten1 = HT[1] + " " + HT[2]
+        }
+        else if (HT.length == 4) {
+          ten1 = HT[1] + " " + HT[2] + " " + HT[3]
+        }
+        else if (HT.length == 5) {
+          ten1 = HT[1] + " " + HT[2] + " " + HT[3] + " " + HT[4]
+        }
+        else if (HT.length == 6) {
+          ten1 = HT[1] + " " + HT[2] + " " + HT[3] + " " + HT[4] + " " + HT[5]
+        }
+
+
+
+        // let temp 
+        // for (let i = 1; i <= HT.length; i++) {
+        //   ten1 = ten1+" "+ (HovaTen[i]);
+        //   // ten1 = ten1+" "+ temp
+        //   // console.log("i", i);
+
+        //   // console.log("temp", HovaTen[i])
+        // };
+
+        let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
+          where: {
+            Dienthoai: data.sdt,
+            // (Ho + " "+ Ten) : (data.ho +" "+data.ten)
+            Ten: ten1,
+            Ho: ho1
+          }, // theem ho, ten
+
+        });
+
+        if (thongtinbenhnhans) {
+          // if (thongtinbenhnhans.Ho + " " + thongtinbenhnhans.Ten == data.hoten) {
+          // await db.bookings.create({
+          //   iddv: data.iddv,
+          //   idbn: data.idbn,
+          //   hoten: data.hoten,
+          //   sdt: data.sdt,
+          //   // patientId: user[0].id,
+          //   ngaysinh: data.ngaysinh,
+          //   diachi: data.diachi,
+          //   ngaydat: data.ngaydat,
+          //   stt: data.stt,
+          //   buoikham: data.buoikham
+
+          // });
+          let lichkham = await db.lichkhams.findOne({
+            where: {
+              // doctorId: data.doctorId,
+              // timeType: data.timeType,
+              ngay: data.ngaydat,
+            },
+            raw: false,
+          });
+          if (lichkham) {
+            // await db.bookings.update({
+            //   slsaHientai: slsaHientai++
+
+            // });
+            lichkham.slsa+1;
+            await lichkham.save();
+          }
+
+
+
+          resovle({
+            errCode: 0,
+            errMessage: "dat !",
           });
 
-          // if (thongtinbenhnhans) {
-            if (thongtinbenhnhans.Ho+" "+thongtinbenhnhans.Ten == data.hoten) {
+        } else {
+          // await db.thongtinbenhnhans.create({
+          //   Ho: ho1,
+          //   Ten: ten1,
+          //   Ngaysinh: data.ngaysinh,
+          //   Dienthoai: data.sdt,
+          //   Gioitinh: data.gt,
+          //   Diachi: data.diachi,
+          //   Trieuchung: data.trieuchung,
+          // })
+          // await db.bookings.create({
+          //   iddv: data.iddv,
+          //   idbn: data.idbn,
+          //   hoten: data.hoten,
+          //   sdt: data.sdt,
+          //   // patientId: user[0].id,
+          //   ngaysinh: data.ngaysinh,
+          //   diachi: data.diachi,
+          //   ngaydat: data.ngaydat,
+          //   stt: data.stt,
+          //   buoikham: data.buoikham
 
-            
-              await db.bookings.create({
-                iddv: data.iddv,
-                idbn: data.idbn,
-                hoten: data.hoten,
-                sdt: data.sdt,
-                // patientId: user[0].id,
-                ngaysinh: data.ngaysinh,
-                diachi: data.diachi,
-                stt: data.stt,
-               
-              });
+          // });
 
-              resovle({
-                errCode: 0,
-                errMessage: "dat !",
-              });
-            
-          }else{
-            await db.thongtinbenhnhans.create({
-              Ho: data.ho,
-              Ten: data.ten,
-              Ngaysinh: data.ngaysinh,
-              Dienthoai: data.sdt,
-              Gioitinh: data.gt,
-              Diachi:  data.diachi,
-              Trieuchung: data.trieuchung,
-            })
-            await db.bookings.create({
-              iddv: data.iddv,
-              idbn: data.idbn,
-              hoten: data.hoten,
-              sdt: data.sdt,
-              // patientId: user[0].id,
-              ngaysinh: data.ngaysinh,
-              diachi: data.diachi,
-              stt: data.stt,
-            });
-            resovle({
-              errCode: 2,
-              errMessage: "luu va dat",
-            });
+          let lichkham = await db.lichkhams.findOne({
+            where: {
+              // doctorId: data.doctorId,
+              // timeType: data.timeType,
+              ngay: data.ngaydat,
+            },
+            raw: false,
+          });
+          if (lichkham) {
+            // await db.bookings.update({
+            //   slsaHientai: slsaHientai++
+
+            // });
+            lichkham.slsa+1;
+            await lichkham.save();
           }
-  
-  
-          
-        // }
-        // } else {
-        //   let token = uuidv4();
-        //   await emailService.sendEmail({
-        //     receiverEmail: data.email,
-        //     patientname: data.fullname,
-        //     time: data.timeString,
-        //     doctorname: data.doctorname,
-        //     language: data.language,
-        //     redirectLink: buildUrlEmail(data.doctorId, token),
-        //   });
 
-        //upsert patient
-        
+
+          resovle({
+            errCode: 0,
+            errMessage: "luu va dat",
+          });
+        }
+
+
+
+      }
+      // } else {
+      //   let token = uuidv4();
+      //   await emailService.sendEmail({
+      //     receiverEmail: data.email,
+      //     patientname: data.fullname,
+      //     time: data.timeString,
+      //     doctorname: data.doctorname,
+      //     language: data.language,
+      //     redirectLink: buildUrlEmail(data.doctorId, token),
+      //   });
+
+      //upsert patient
+
     } catch (e) {
       reject(e);
     }
@@ -489,3 +562,38 @@ module.exports = {
   searchBooking: searchBooking,
   createAppoinment: createAppoinment
 };
+
+// let incCurrentNumber = await db.lichkhams.findOne({
+//   where: {
+//     ngay: data.ngaydat,
+//     iddv: data.iddv
+//   },
+//   raw: false,
+// });
+// if (incCurrentNumber && data.buoikham == "Sáng") {
+//   // incCurrentNumber.currentNumber++;
+//   slsaHientai++;
+//   await incCurrentNumber.save();
+//   resovle({
+//     errCode: 5,
+//     errMessage: "sáng",
+//   });
+// }
+// if (incCurrentNumber && data.buoikham == "Trưa") {
+//   // incCurrentNumber.currentNumber++;
+//   incCurrentNumber.sltrHientai++;
+//   await incCurrentNumber.save();
+//   resovle({
+//     errCode: 5,
+//     errMessage: "trưa",
+//   });
+// }
+// if (incCurrentNumber && data.buoikham == "Chiều") {
+//   // incCurrentNumber.currentNumber++;
+//   incCurrentNumber.slchHientai++;
+//   await incCurrentNumber.save();
+//   resovle({
+//     errCode: 5,
+//     errMessage: "chieu",
+//   });
+// }

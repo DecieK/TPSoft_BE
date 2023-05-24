@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       ngaysinh: DataTypes.DATE,
       diachi: DataTypes.STRING,
       stt: DataTypes.INTEGER,
+      buoikham: DataTypes.STRING,
       ngaydat: DataTypes.DATE,
 
 
