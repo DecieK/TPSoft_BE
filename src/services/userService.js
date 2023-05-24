@@ -403,7 +403,9 @@ let createAppoinment = (data) => {
             
           });
 
-          if (thongtinbenhnhans) {
+          // if (thongtinbenhnhans) {
+            if (thongtinbenhnhans.Ho+" "+thongtinbenhnhans.Ten == data.hoten) {
+
             
               await db.bookings.create({
                 iddv: data.iddv,
@@ -450,7 +452,7 @@ let createAppoinment = (data) => {
   
   
           
-        }
+        // }
         // } else {
         //   let token = uuidv4();
         //   await emailService.sendEmail({
