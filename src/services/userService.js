@@ -370,6 +370,7 @@ let searchBooking = (id) => {
   });
 };  
 let createAppoinment = (data) => {
+  const hova
   return new Promise(async (resovle, reject) => {
     try {
       if (
@@ -395,8 +396,9 @@ let createAppoinment = (data) => {
           let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
             where: { 
               Dienthoai: data.sdt,
-              Ho: data.ho,
-              Ten: data.ten
+              (Ho + " "+ Ten) : (data.ho +" "+data.ten)
+              // Ten: data.ten,
+              // Ho: data.ho
             }, // theem ho, ten
             
           });
