@@ -32,6 +32,10 @@ module.exports = {
       buoikham: {
         type: Sequelize.STRING,
       },
+      ngaykham: {
+        // allowNull: false,
+        type: Sequelize.DATE,
+      },
       ngaydat: {
         // allowNull: false,
         type: Sequelize.DATE,

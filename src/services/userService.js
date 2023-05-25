@@ -323,7 +323,7 @@ let searchSDTLichkham = (Dienthoai) => {
         lichkham = await db.lichkhams.findAll({
           // attributes: {
           //     exclude: ['password']
-          // }
+          // }y
         });
       }
 
@@ -387,14 +387,15 @@ let createAppoinment = (data) => {
         !data.trieuchung ||
         !data.ngaydat ||
         !data.buoikham ||
-        !data.stt
-        // !data.ngaydat
+        !data.stt ||
+        !data.ngaykham
       ) {
         resovle({
           errCode: 1,
           errMessage: "Missing parameter",
         });
       } else {
+        // let ngaydatlich = data.ngaydat.getDay
         let HT = data.hoten.split(" ")
         let ho1
         ho1 = HT[0]
@@ -415,17 +416,6 @@ let createAppoinment = (data) => {
           ten1 = HT[1] + " " + HT[2] + " " + HT[3] + " " + HT[4] + " " + HT[5]
         }
 
-
-
-        // let temp 
-        // for (let i = 1; i <= HT.length; i++) {
-        //   ten1 = ten1+" "+ (HovaTen[i]);
-        //   // ten1 = ten1+" "+ temp
-        //   // console.log("i", i);
-
-        //   // console.log("temp", HovaTen[i])
-        // };
-
         let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
           where: {
             Dienthoai: data.sdt,
@@ -433,111 +423,123 @@ let createAppoinment = (data) => {
             Ten: ten1,
             Ho: ho1
           }, // theem ho, ten
-
         });
 
         if (thongtinbenhnhans) {
           // if (thongtinbenhnhans.Ho + " " + thongtinbenhnhans.Ten == data.hoten) {
-          // await db.bookings.create({
-          //   iddv: data.iddv,
-          //   idbn: data.idbn,
-          //   hoten: data.hoten,
-          //   sdt: data.sdt,
-          //   // patientId: user[0].id,
-          //   ngaysinh: data.ngaysinh,
-          //   diachi: data.diachi,
-          //   ngaydat: data.ngaydat,
-          //   stt: data.stt,
-          //   buoikham: data.buoikham
+          await db.bookings.create({
+            iddv: data.iddv,
+            idbn: data.idbn,
+            hoten: data.hoten,
+            sdt: data.sdt,
+            // patientId: user[0].id,
+            ngaysinh: data.ngaysinh,
+            diachi: data.diachi,
+            ngaydat: data.ngaydat,
+            ngaykham: data.ngaykham,
+            stt: data.stt,
+            buoikham: data.buoikham
 
-          // });
+          });
           let lichkham = await db.lichkhams.findOne({
             where: {
-              // doctorId: data.doctorId,
-              // timeType: data.timeType,
-              ngay: data.ngaydat,
+              iddv: data.iddv,
+              ngay: data.ngaykham,
             },
             raw: false,
           });
           if (lichkham) {
-            // await db.bookings.update({
-            //   slsaHientai: slsaHientai++
-
-            // });
-            lichkham.slsa+1;
-            await lichkham.save();
+            if(data.buoikham == "Sáng"){
+              lichkham.slsaHientai++;
+              await lichkham.save();
+              resovle({
+                errCode: 0,
+                errMessage: "co lichkham saved",
+              });
+            }
+            if(data.buoikham == "Trưa"){
+              lichkham.sltrHientai++;
+              await lichkham.save();
+              resovle({
+                errCode: 0,
+                errMessage: "co lichkham saved",
+              });
+            }
+            if(data.buoikham == "Chiều"){
+              lichkham.slchHientai++;
+              await lichkham.save();
+              resovle({
+                errCode: 0,
+                errMessage: "co lichkham saved",
+              });
+            }
           }
-
-
-
+          else {
+            resovle({
+              errCode: 1,
+              errMessage: "k lichkham saved",
+            });
+          }
           resovle({
             errCode: 0,
             errMessage: "dat !",
           });
 
         } else {
-          // await db.thongtinbenhnhans.create({
-          //   Ho: ho1,
-          //   Ten: ten1,
-          //   Ngaysinh: data.ngaysinh,
-          //   Dienthoai: data.sdt,
-          //   Gioitinh: data.gt,
-          //   Diachi: data.diachi,
-          //   Trieuchung: data.trieuchung,
-          // })
-          // await db.bookings.create({
-          //   iddv: data.iddv,
-          //   idbn: data.idbn,
-          //   hoten: data.hoten,
-          //   sdt: data.sdt,
-          //   // patientId: user[0].id,
-          //   ngaysinh: data.ngaysinh,
-          //   diachi: data.diachi,
-          //   ngaydat: data.ngaydat,
-          //   stt: data.stt,
-          //   buoikham: data.buoikham
+          await db.thongtinbenhnhans.create({
+            Ho: ho1,
+            Ten: ten1,
+            Ngaysinh: data.ngaysinh,
+            Dienthoai: data.sdt,
+            Gioitinh: data.gt,
+            Diachi: data.diachi,
+            Trieuchung: data.trieuchung,
+          })
+          await db.bookings.create({
+            iddv: data.iddv,
+            idbn: data.idbn,
+            hoten: data.hoten,
+            sdt: data.sdt,
+            ngaysinh: data.ngaysinh,
+            diachi: data.diachi,
+            ngaydat: data.ngaydat,
+            ngaykham: data.ngaykham,
+            stt: data.stt,
+            buoikham: data.buoikham
 
-          // });
-
+          });
           let lichkham = await db.lichkhams.findOne({
             where: {
-              // doctorId: data.doctorId,
-              // timeType: data.timeType,
-              ngay: data.ngaydat,
+              iddv: data.iddv,
+              ngay: data.ngaykham,
             },
             raw: false,
           });
           if (lichkham) {
-            // await db.bookings.update({
-            //   slsaHientai: slsaHientai++
-
-            // });
-            lichkham.slsa+1;
+            lichkham.slsaHientai++;
             await lichkham.save();
+            resovle({
+              errCode: 0,
+              errMessage: "co lichkham saved",
+            });
           }
-
-
+          else {
+            resovle({
+              errCode: 1,
+              errMessage: "k lichkham saved",
+            });
+          }
           resovle({
             errCode: 0,
             errMessage: "luu va dat",
           });
         }
-
-
-
+        // resovle({
+        //   errCode: 0,
+        //   errMessage: "luu va dádasdat",
+        // });
       }
-      // } else {
-      //   let token = uuidv4();
-      //   await emailService.sendEmail({
-      //     receiverEmail: data.email,
-      //     patientname: data.fullname,
-      //     time: data.timeString,
-      //     doctorname: data.doctorname,
-      //     language: data.language,
-      //     redirectLink: buildUrlEmail(data.doctorId, token),
-      //   });
 
-      //upsert patient
 
     } catch (e) {
       reject(e);
@@ -563,37 +565,3 @@ module.exports = {
   createAppoinment: createAppoinment
 };
 
-// let incCurrentNumber = await db.lichkhams.findOne({
-//   where: {
-//     ngay: data.ngaydat,
-//     iddv: data.iddv
-//   },
-//   raw: false,
-// });
-// if (incCurrentNumber && data.buoikham == "Sáng") {
-//   // incCurrentNumber.currentNumber++;
-//   slsaHientai++;
-//   await incCurrentNumber.save();
-//   resovle({
-//     errCode: 5,
-//     errMessage: "sáng",
-//   });
-// }
-// if (incCurrentNumber && data.buoikham == "Trưa") {
-//   // incCurrentNumber.currentNumber++;
-//   incCurrentNumber.sltrHientai++;
-//   await incCurrentNumber.save();
-//   resovle({
-//     errCode: 5,
-//     errMessage: "trưa",
-//   });
-// }
-// if (incCurrentNumber && data.buoikham == "Chiều") {
-//   // incCurrentNumber.currentNumber++;
-//   incCurrentNumber.slchHientai++;
-//   await incCurrentNumber.save();
-//   resovle({
-//     errCode: 5,
-//     errMessage: "chieu",
-//   });
-// }
