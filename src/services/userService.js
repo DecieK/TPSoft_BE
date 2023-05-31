@@ -315,11 +315,11 @@ let searchIdBenhnhan = (id) => {
     }
   });
 };
-let searchSDTLichkham = (Dienthoai) => {
+let searchSDTLichkham = (ngay) => {
   return new Promise(async (resolve, reject) => {
     try {
       let lichkham = "";
-      if (Dienthoai === "ALL") {
+      if (ngay === "ALL") {
         lichkham = await db.lichkhams.findAll({
           // attributes: {
           //     exclude: ['password']
@@ -327,9 +327,9 @@ let searchSDTLichkham = (Dienthoai) => {
         });
       }
 
-      if (Dienthoai && Dienthoai !== "ALL") {
+      if (ngay && ngay !== "ALL") {
         lichkham = await db.lichkhams.findAll({
-          where: { ngay: Dienthoai },
+          where: { ngay: ngay },
           //  fetchData.thongtinbenhnhans[{ Dienthoai: Dienthoai }]['COUNT(*)'],
           //   attributes: {
           //     exclude: ["password"],
@@ -363,7 +363,7 @@ let searchBooking = (id) => {
           //   },
         });
       }
-      resolve(bookings);
+      resolve(booking);
     } catch (e) {
       reject(e);
     }
@@ -547,7 +547,33 @@ let createAppoinment = (data) => {
   });
 };
 
+let searchHosodv = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let hosodonvi = "";
+      if (id === "ALL") {
+        hosodonvi = await db.hosodonvis.findAll({
+          // attributes: {
+          //     exclude: ['password']
+          // }
+        });
+      }
 
+      if (id && id !== "ALL") {
+        hosodonvi = await db.hosodonvis.findAll({
+          where: { id: id },
+          //  fetchData.thongtinbenhnhans[{ Dienthoai: Dienthoai }]['COUNT(*)'],
+          //   attributes: {
+          //     exclude: ["password"],
+          //   },
+        });
+      }
+      resolve(hosodonvi);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
 module.exports = {
   handleUserLogin: handleUserLogin,
   checkUserEmail: checkUserEmail,
@@ -562,6 +588,7 @@ module.exports = {
   searchIdBenhnhan: searchIdBenhnhan,
   searchSDTLichkham: searchSDTLichkham,
   searchBooking: searchBooking,
-  createAppoinment: createAppoinment
+  createAppoinment: createAppoinment,
+  searchHosodv: searchHosodv,
 };
 

@@ -54,7 +54,8 @@ const initWebRoutes = (app) => {
   router.get("/api/get-all-benhnhanId", userController.searchIdBenhnhan);
   router.get("/api/get-all-lichkhamSDT", userController.searchSDTLichkham);
   router.get("/api/get-all-booking", userController.searchBooking);
-  router.get("/api/get-all-booking", userController.searchBooking);
+  // router.get("/api/get-all-booking", userController.searchBooking);
+  router.get("/api/get-all-hosodv", userController.searchHosodv);
   router.post("/api/create-appoinment-booking", userController.createAppoinment);
 
 

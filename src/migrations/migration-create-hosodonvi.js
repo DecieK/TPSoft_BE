@@ -2,17 +2,21 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("hosodonvis", {
-      iddv: {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      // iddv: {
+      //   type: Sequelize.INTEGER,
+      // },
       tendv: {
         type: Sequelize.STRING,
       },
-     
-
+      tenbs: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

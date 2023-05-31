@@ -138,9 +138,9 @@ let searchIdBenhnhan = async (req, res) => {
 };
 let searchSDTLichkham = async (req, res) => {
   // let Dienthoai = "ALL"; //req.query.id; //get all or id
-  let Dienthoai = req.query.keyword
+  let ngay = req.query.keyword
 
-  if (!Dienthoai) {
+  if (!ngay) {
     return res.status(200).json({
       errCode: 1,
       errMessage: "missing require parameters",
@@ -148,7 +148,7 @@ let searchSDTLichkham = async (req, res) => {
     });
   }
 
-  let lichkhams = await userService.searchSDTLichkham(Dienthoai);
+  let lichkhams = await userService.searchSDTLichkham(ngay);
 
   return res.status(200).json({
     // errCode: 0,
@@ -189,7 +189,29 @@ let createAppoinment = async (req, res) => {
     });
   }
 };
+let searchHosodv = async (req, res) => {
+  // let Dienthoai = "ALL"; //req.query.id; //get all or id
+  // let iddv = "ALL"; 
+  let id = req.query.keyword
 
+
+  if (!id) {
+    return res.status(200).json({
+      errCode: 1,
+      errMessage: "missing require parameters",
+      hosodonvis: {},
+    });
+  }
+
+  let hosodonvis = await userService.searchHosodv(id);
+
+  return res.status(200).json({
+    // errCode: 0,
+    // errMessage: "ok",
+    hosodonvis,
+  });
+};
+``
 module.exports = {
   handleLogin: handleLogin,
   handleGetAllUsers: handleGetAllUsers,
@@ -202,5 +224,6 @@ module.exports = {
   searchIdBenhnhan: searchIdBenhnhan,
   searchSDTLichkham: searchSDTLichkham,
   searchBooking: searchBooking,
-  createAppoinment: createAppoinment
+  createAppoinment: createAppoinment,
+  searchHosodv: searchHosodv,
 };

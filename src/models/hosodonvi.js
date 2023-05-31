@@ -9,16 +9,11 @@ module.exports = (sequelize, DataTypes) => {
   }
   hosodonvis.init(
     {
-      iddv: DataTypes.INTEGER,
-      idbn: DataTypes.INTEGER,
-      hoten: DataTypes.STRING,
-      sdt: DataTypes.STRING,
-      ngaysinh: DataTypes.DATE,
-      diachi: DataTypes.STRING,
-      stt: DataTypes.INTEGER,
-      buoikham: DataTypes.STRING,
-      ngaykham: DataTypes.DATE,
-      ngaydat: DataTypes.DATE,
+      // id: DataTypes.INTEGER,
+      // iddv: DataTypes.INTEGER,
+      tendv: DataTypes.STRING,
+      tenbs: DataTypes.STRING,
+     
 
 
       // CM_heart: DataTypes.INTEGER,
