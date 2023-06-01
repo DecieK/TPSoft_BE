@@ -419,28 +419,12 @@ let createAppoinment = (data) => {
         let thongtinbenhnhans = await db.thongtinbenhnhans.findOne({
           where: {
             Dienthoai: data.sdt,
-            // (Ho + " "+ Ten) : (data.ho +" "+data.ten)
             Ten: ten1,
             Ho: ho1
-          }, // theem ho, ten
+          },
         });
 
         if (thongtinbenhnhans) {
-          // if (thongtinbenhnhans.Ho + " " + thongtinbenhnhans.Ten == data.hoten) {
-          await db.bookings.create({
-            iddv: data.iddv,
-            idbn: data.idbn,
-            hoten: data.hoten,
-            sdt: data.sdt,
-            // patientId: user[0].id,
-            ngaysinh: data.ngaysinh,
-            diachi: data.diachi,
-            ngaydat: data.ngaydat,
-            ngaykham: data.ngaykham,
-            stt: data.stt,
-            buoikham: data.buoikham
-
-          });
           let lichkham = await db.lichkhams.findOne({
             where: {
               iddv: data.iddv,
@@ -449,28 +433,96 @@ let createAppoinment = (data) => {
             raw: false,
           });
           if (lichkham) {
-            if(data.buoikham == "Sáng"){
+            if (data.buoikham == "Sáng" && (data.stt <= (lichkham.chovuotsa + lichkham.slsa))) {
               lichkham.slsaHientai++;
               await lichkham.save();
+
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                ngaydat: data.ngaydat,
+                ngaykham: data.ngaykham,
+                stt: data.stt,
+                buoikham: data.buoikham
+
+              });
+
               resovle({
                 errCode: 0,
                 errMessage: "co lichkham saved",
               });
             }
-            if(data.buoikham == "Trưa"){
+            else {
+              resovle({
+                errCode: 5,
+                errMessage: "lịch khám đầy",
+              });
+            }
+
+            if (data.buoikham == "Trưa" && (data.stt <= (lichkham.chovuottr + lichkham.sltr))) {
               lichkham.sltrHientai++;
               await lichkham.save();
+
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                ngaydat: data.ngaydat,
+                ngaykham: data.ngaykham,
+                stt: data.stt,
+                buoikham: data.buoikham
+
+              });
+
               resovle({
                 errCode: 0,
                 errMessage: "co lichkham saved",
               });
             }
-            if(data.buoikham == "Chiều"){
+            else {
+              resovle({
+                errCode: 5,
+                errMessage: "lịch khám đầy",
+              });
+            }
+
+            if (data.buoikham == "Chiều" && (data.stt <= (lichkham.chovuotch + lichkham.slch))) {
               lichkham.slchHientai++;
               await lichkham.save();
+
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                ngaydat: data.ngaydat,
+                ngaykham: data.ngaykham,
+                stt: data.stt,
+                buoikham: data.buoikham
+
+              });
+
               resovle({
                 errCode: 0,
                 errMessage: "co lichkham saved",
+              });
+            }
+            else {
+              resovle({
+                errCode: 5,
+                errMessage: "lịch khám đầy",
               });
             }
           }
@@ -486,28 +538,28 @@ let createAppoinment = (data) => {
           });
 
         } else {
-          await db.thongtinbenhnhans.create({
-            Ho: ho1,
-            Ten: ten1,
-            Ngaysinh: data.ngaysinh,
-            Dienthoai: data.sdt,
-            Gioitinh: data.gt,
-            Diachi: data.diachi,
-            Trieuchung: data.trieuchung,
-          })
-          await db.bookings.create({
-            iddv: data.iddv,
-            idbn: data.idbn,
-            hoten: data.hoten,
-            sdt: data.sdt,
-            ngaysinh: data.ngaysinh,
-            diachi: data.diachi,
-            ngaydat: data.ngaydat,
-            ngaykham: data.ngaykham,
-            stt: data.stt,
-            buoikham: data.buoikham
+          // await db.thongtinbenhnhans.create({
+          //   Ho: ho1,
+          //   Ten: ten1,
+          //   Ngaysinh: data.ngaysinh,
+          //   Dienthoai: data.sdt,
+          //   Gioitinh: data.gt,
+          //   Diachi: data.diachi,
+          //   Trieuchung: data.trieuchung,
+          // })
+          // await db.bookings.create({
+          //   iddv: data.iddv,
+          //   idbn: data.idbn,
+          //   hoten: data.hoten,
+          //   sdt: data.sdt,
+          //   ngaysinh: data.ngaysinh,
+          //   diachi: data.diachi,
+          //   ngaydat: data.ngaydat,
+          //   ngaykham: data.ngaykham,
+          //   stt: data.stt,
+          //   buoikham: data.buoikham
 
-          });
+          // });
           let lichkham = await db.lichkhams.findOne({
             where: {
               iddv: data.iddv,
@@ -516,12 +568,128 @@ let createAppoinment = (data) => {
             raw: false,
           });
           if (lichkham) {
-            lichkham.slsaHientai++;
-            await lichkham.save();
-            resovle({
-              errCode: 0,
-              errMessage: "co lichkham saved",
-            });
+            if (data.buoikham == "Sáng" && (data.stt <= (lichkham.chovuotsa + lichkham.slsa))) {
+              lichkham.slsaHientai++;
+              await lichkham.save();
+
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                ngaydat: data.ngaydat,
+                ngaykham: data.ngaykham,
+                stt: data.stt,
+                buoikham: data.buoikham
+
+              });
+              await db.thongtinbenhnhans.create({
+                Ho: ho1,
+                Ten: ten1,
+                Ngaysinh: data.ngaysinh,
+                Dienthoai: data.sdt,
+                Gioitinh: data.gt,
+                Diachi: data.diachi,
+                Trieuchung: data.trieuchung,
+              })
+
+              resovle({
+                errCode: 0,
+                errMessage: "co lichkham saved",
+              });
+            }
+            else {
+              resovle({
+                errCode: 5,
+                errMessage: "lịch khám đầy",
+              });
+            }
+
+            if (data.buoikham == "Trưa" && (data.stt <= (lichkham.chovuottr + lichkham.sltr))) {
+              lichkham.sltrHientai++;
+              await lichkham.save();
+
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                ngaydat: data.ngaydat,
+                ngaykham: data.ngaykham,
+                stt: data.stt,
+                buoikham: data.buoikham
+
+              });
+              await db.thongtinbenhnhans.create({
+                Ho: ho1,
+                Ten: ten1,
+                Ngaysinh: data.ngaysinh,
+                Dienthoai: data.sdt,
+                Gioitinh: data.gt,
+                Diachi: data.diachi,
+                Trieuchung: data.trieuchung,
+              })
+
+              resovle({
+                errCode: 0,
+                errMessage: "co lichkham saved",
+              });
+            }
+            else {
+              resovle({
+                errCode: 5,
+                errMessage: "lịch khám đầy",
+              });
+            }
+
+            if (data.buoikham == "Chiều" && (data.stt <= (lichkham.chovuotch + lichkham.slch))) {
+              lichkham.slchHientai++;
+              await lichkham.save();
+
+              await db.bookings.create({
+                iddv: data.iddv,
+                idbn: data.idbn,
+                hoten: data.hoten,
+                sdt: data.sdt,
+                // patientId: user[0].id,
+                ngaysinh: data.ngaysinh,
+                diachi: data.diachi,
+                ngaydat: data.ngaydat,
+                ngaykham: data.ngaykham,
+                stt: data.stt,
+                buoikham: data.buoikham
+
+              });
+
+              await db.thongtinbenhnhans.create({
+                Ho: ho1,
+                Ten: ten1,
+                Ngaysinh: data.ngaysinh,
+                Dienthoai: data.sdt,
+                Gioitinh: data.gt,
+                Diachi: data.diachi,
+                Trieuchung: data.trieuchung,
+              })
+
+              resovle({
+                errCode: 0,
+                errMessage: "co lichkham saved",
+              });
+            }
+            else {
+              resovle({
+                errCode: 5,
+                errMessage: "lịch khám đầy",
+              });
+            }
+
+
           }
           else {
             resovle({
@@ -534,10 +702,10 @@ let createAppoinment = (data) => {
             errMessage: "luu va dat",
           });
         }
-        // resovle({
-        //   errCode: 0,
-        //   errMessage: "luu va dádasdat",
-        // });
+        resovle({
+          errCode: 0,
+          errMessage: "luu va dádasdat",
+        });
       }
 
 
