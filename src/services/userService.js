@@ -457,14 +457,14 @@ let createAppoinment = (data) => {
                 errMessage: "co lichkham saved",
               });
             }
-            else {
-              resovle({
-                errCode: 5,
-                errMessage: "lịch khám đầy",
-              });
-            }
+            // else {
+            //   resovle({
+            //     errCode: 5,
+            //     errMessage: "lịch khám đầy",
+            //   });
+            // }
 
-            if (data.buoikham == "Trưa" && (data.stt <= (lichkham.chovuottr + lichkham.sltr))) {
+           else if (data.buoikham == "Trưa" && (data.stt <= (lichkham.chovuottr + lichkham.sltr))) {
               lichkham.sltrHientai++;
               await lichkham.save();
 
@@ -488,14 +488,14 @@ let createAppoinment = (data) => {
                 errMessage: "co lichkham saved",
               });
             }
-            else {
-              resovle({
-                errCode: 5,
-                errMessage: "lịch khám đầy",
-              });
-            }
+            // else {
+            //   resovle({
+            //     errCode: 6,
+            //     errMessage: "lịch khám đầy",
+            //   });
+            // }
 
-            if (data.buoikham == "Chiều" && (data.stt <= (lichkham.chovuotch + lichkham.slch))) {
+           else if (data.buoikham == "Chiều" && (data.stt <= (lichkham.chovuotch + lichkham.slch))) {
               lichkham.slchHientai++;
               await lichkham.save();
 
@@ -521,7 +521,7 @@ let createAppoinment = (data) => {
             }
             else {
               resovle({
-                errCode: 5,
+                errCode: 7,
                 errMessage: "lịch khám đầy",
               });
             }
@@ -598,17 +598,17 @@ let createAppoinment = (data) => {
 
               resovle({
                 errCode: 0,
-                errMessage: "co lichkham saved",
+                errMessage: "co lichkham saveddd",
               });
             }
-            else {
-              resovle({
-                errCode: 5,
-                errMessage: "lịch khám đầy",
-              });
-            }
+            // else {
+            //   resovle({
+            //     errCode: 8,
+            //     errMessage: "lịch khám đầy",
+            //   });
+            // }
 
-            if (data.buoikham == "Trưa" && (data.stt <= (lichkham.chovuottr + lichkham.sltr))) {
+           else if (data.buoikham == "Trưa" && (data.stt <= (lichkham.chovuottr + lichkham.sltr))) {
               lichkham.sltrHientai++;
               await lichkham.save();
 
@@ -638,17 +638,17 @@ let createAppoinment = (data) => {
 
               resovle({
                 errCode: 0,
-                errMessage: "co lichkham saved",
+                errMessage: "co lichkhammm saved",
               });
             }
-            else {
-              resovle({
-                errCode: 5,
-                errMessage: "lịch khám đầy",
-              });
-            }
+            // else {
+            //   resovle({
+            //     errCode: 9,
+            //     errMessage: "lịch khám đầy",
+            //   });
+            // }
 
-            if (data.buoikham == "Chiều" && (data.stt <= (lichkham.chovuotch + lichkham.slch))) {
+          else  if (data.buoikham == "Chiều" && (data.stt <= (lichkham.chovuotch + lichkham.slch))) {
               lichkham.slchHientai++;
               await lichkham.save();
 
@@ -684,7 +684,7 @@ let createAppoinment = (data) => {
             }
             else {
               resovle({
-                errCode: 5,
+                errCode: 10,
                 errMessage: "lịch khám đầy",
               });
             }
@@ -693,7 +693,7 @@ let createAppoinment = (data) => {
           }
           else {
             resovle({
-              errCode: 1,
+              errCode: 11,
               errMessage: "k lichkham saved",
             });
           }
